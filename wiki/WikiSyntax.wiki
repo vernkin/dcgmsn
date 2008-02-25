@@ -1,7 +1,7 @@
 #summary Wiki语法帮助
 #labels Featured
 
-由于Google在本页面编辑Wiki不提供可视化工作
+由于Google在本页面编辑Wiki不提供可视化编辑
 
 = 参考网站 =
 http://developer.mozilla.org/cn/docs/MDC:Wiki_Markup_Reference
