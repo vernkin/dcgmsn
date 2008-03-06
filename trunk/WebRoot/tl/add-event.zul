@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window title="new OccurEvent window" width="300px"
+	xmlns:a="http://www.zkoss.org/2005/zk/annotation" id="eventwin">
+	<zscript>
+		<![CDATA[
+		import org.zkforge.timeline.data.*;
+		OccurEvent e=arg.get("event");
+]]>
+	</zscript>
+	<grid>
+		<columns>
+			<column label="Type" />
+			<column label="Context" />
+		</columns>
+		<rows>
+			<row>
+				<label value="Start Date:" />
+				<a:bind value="e.start" />
+				<datebox />
+			</row>
+			<row>
+				<label value="End Date:" />
+				<a:bind value="e.end" />
+				<datebox />
+			</row>
+
+			<row>
+				<label value="Text:" />
+				<a:bind value="e.text" />
+				<textbox />
+			</row>
+			<row>
+				<label value="Event Type:" />
+				<radiogroup id="type">
+					<radio label="Duration Event"
+						checked="${e.duration}" />
+					<radio label="Not Duration Event"
+						checked="${!e.duration}" />
+				</radiogroup>
+			</row>
+			<row>
+				<label value="Description:" />
+				<a:bind value="e.description" />
+				<textbox rows="3" width="99%" />
+			</row>
+
+			<row>
+				<label value="Image url:" />
+				<a:bind value="e.imageUrl" />
+				<textbox />
+			</row>
+			<row>
+				<label value="Icon url:" />
+				<a:bind value="e.iconUrl" />
+				<textbox />
+			</row>
+			<row>
+				<label value="Link url:" />
+				<a:bind value="e.linkUrl" />
+				<textbox />
+			</row>
+			<row>
+				<label value="Color" />
+				<a:bind value="e.color" />
+				<textbox />
+			</row>
+			<row>
+				<label value="Text Color" />
+				<a:bind value="e.textColor" />
+				<textbox />
+			</row>
+		</rows>
+
+	</grid>
+	<hbox>
+		<button label="OK" onClick="update()" />
+		<button label="Cancle" onClick="cancle()" />
+	</hbox>
+
+	<zscript>
+		<![CDATA[
+    //prepare the AnnotateDataBinder
+    AnnotateDataBinder binder = new AnnotateDataBinder(eventwin);
+    binder.bindBean("e", e);
+
+    //initialize UI components
+    binder.loadAll();
+    
+    void update() {
+      //copy UI components values to data bean properties in one method call.
+      binder.saveAll();
+      if(type.getSelectedIndex()==0)
+      	e.setDuration(true);
+      else
+      	e.setDuration(false);
+      eventwin.setAttribute("OK",true);
+      eventwin.detach();
+    }
+    
+    void cancle(){
+      eventwin.setAttribute("OK",false);
+      eventwin.detach();    
+    }
+    ]]>
+	</zscript>
+</window>
+

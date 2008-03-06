@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+Any modifications will be overwritten.
+To include a user specific buildfile here, simply create one in the same
+directory with the processing instruction <?eclipse.ant.import?>
+as the first entry and export the buildfile again. -->
+<project basedir="." default="schema" name="HibernateSample">
+    <property environment="env"/>
+    <property name="junit.output.dir" value="junit"/>
+    <property name="target" value="1.5"/>
+    <property name="source" value="1.5"/>
+
+    <path id="hibernate.userclasspath">
+        <pathelement location="../src"/>
+        <pathelement location="../build/classes"/>
+        <fileset dir="../WebRoot/WEB-INF/lib">
+            <include name="**/*.jar"/>
+        </fileset>
+        <pathelement location="./hibernate-tools.jar"/>
+    </path>
+
+    <taskdef name="hibernatetool"
+        classname="org.hibernate.tool.ant.HibernateToolTask"
+        classpathref="hibernate.userclasspath"/>
+
+    <target name="schema"
+        description="Exports a generated schema to DB and file">
+
+        <hibernatetool destdir=".">
+            <classpath refid="hibernate.userclasspath"/>
+            <annotationconfiguration
+                configurationfile="../src/hibernate.cfg.xml"/>
+            <hbm2ddl
+                drop="true"
+                create="true"
+                export="false"
+                outputfilename="dcgmsn.sql"
+                delimiter=";"
+                format="true"/>
+        </hibernatetool>
+    </target>
+
+</project>

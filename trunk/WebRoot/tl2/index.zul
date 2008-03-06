@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window id="timelineWnd" use="dcgmsn.web.TimelineWindow" width="600px">
+	<vbox width="100%">
+		<hbox id="firstHbox" width="100%">
+		
+		</hbox>
+	
+		<hbox width="100%"><div align="center">
+			<button label="增加事件">
+				<attribute name="onClick">
+					<![CDATA[
+			import java.util.*;
+			import dcgmsn.orm.DCEvent;
+			import org.zkforge.timeline.data.*;
+			
+			OccurEvent e=new OccurEvent();
+			Map params=new HashMap();
+			params.put("event",e);
+			Window w=(Window)Executions.createComponents("add-event.zul", null, params);
+			w.doModal();
+			if(w.getAttribute("OK")){
+			    //try to add myself
+				timelineWnd.addEvent(e);
+				List oes = timeline.getAttribute("oes");
+				oes.add(e);
+				monthinfo.addOccurEvent(e);
+				yearinfo.addOccurEvent(e);
+				monthinfo.scrollToCenter(e.getStart());
+			}
+			]]>
+				</attribute>
+			</button>
+			
+			<button label="删除事件">
+				<attribute name="onClick">
+					<![CDATA[
+			import java.util.*;
+			import dcgmsn.orm.DCEvent;
+			import org.zkforge.timeline.data.*;
+			
+			List oes = timeline.getAttribute("oes");
+			List events = timeline.getAttribute("events");
+			Map params=new HashMap();
+			params.put("oes",oes);
+			Window w=(Window)Executions.createComponents("remove-event.zul", null, params);
+			w.doModal();
+			int index=w.getAttribute("selected");
+			if(index!=-1){
+				timelineWnd.removeEvent(events.get(index));
+				OccurEvent e=(OccurEvent)oes.get(index);
+				monthinfo.removeOccurEvent(e);
+				yearinfo.removeOccurEvent(e);
+				oes.remove(index);
+				monthinfo.scrollToCenter(e.getStart());
+			}
+			]]></attribute>
+			</button>
+		</div></hbox>
+	</vbox>
+
+	<zscript><![CDATA[
+		timelineWnd.load();
+	]]></zscript>
+</window>
