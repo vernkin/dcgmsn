@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+	basic.zul
+	
+	{{IS_NOTE
+	Purpose:
+	
+	Description:
+	
+	History:
+	2007-2-4, Created by Gu WeiXing
+	}}IS_NOTE
+	
+	Copyright (C) 2006 Potix Corporation. All Rights Reserved.
+	
+	{{IS_RIGHT
+	}}IS_RIGHT
+-->
+<window title="decrotator window" width="300px"
+	xmlns:a="http://www.zkoss.org/2005/zk/annotation" id="decoratorwin">
+	<zscript>
+		<![CDATA[
+		import org.zkforge.timeline.decorator.*;
+		SpanHighlightDecorator d=arg.get("decorator");
+]]>
+	</zscript>
+	<grid>
+		<columns>
+			<column label="Type" />
+			<column label="Context" />
+		</columns>
+		<rows>
+			<row>
+				<label value="Start Date:" />
+				<a:bind value="d.startDate" />
+				<datebox />
+			</row>
+			<row>
+				<label value="End Date:" />
+				<a:bind value="d.endDate" />
+				<datebox />
+			</row>
+
+			<row>
+				<label value="Start Label:" />
+				<a:bind value="d.startLabel" />
+				<textbox />
+			</row>
+
+			<row>
+				<label value="End Label:" />
+				<a:bind value="d.endLabel" />
+				<textbox />
+			</row>
+
+			<row>
+				<label value="Opacity:" />
+				<a:bind value="d.opacity" />
+				<textbox />
+			</row>
+
+
+			<row>
+				<label value="Color" />
+				<a:bind value="d.color" />
+				<textbox />
+			</row>
+
+		</rows>
+
+	</grid>
+	<hbox>
+		<button label="OK" onClick="update()" />
+		<button label="Cancle" onClick="cancle()" />
+	</hbox>
+
+	<zscript>
+		<![CDATA[
+    //prepare the AnnotateDataBinder
+    AnnotateDataBinder binder = new AnnotateDataBinder(decoratorwin);
+    binder.bindBean("d", d);
+
+    //initialize UI components
+    binder.loadAll();
+    
+    void update() {
+      //copy UI components values to data bean properties in one method call.
+      binder.saveAll();
+      decoratorwin.setAttribute("OK",true);
+      decoratorwin.detach();
+    }
+    
+    void cancle(){
+    	decoratorwin.setAttribute("OK",false);
+    	decoratorwin.detach();
+    }
+    
+    ]]>
+	</zscript>
+</window>
+

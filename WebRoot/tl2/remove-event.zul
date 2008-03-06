@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window title="删除事件" width="300px"
+	xmlns:a="http://www.zkoss.org/2005/zk/annotation" id="removewin">
+	<zscript>
+		<![CDATA[
+		import java.util.*;
+		ArrayList oes=arg.get("oes");
+]]>
+	</zscript>
+	<listbox id="eventList">
+		<listhead>
+			<listheader label="内容" width="40%" />
+			<listheader label="开始时间" width="30%" />
+			<listheader label="结束时间" width="30%" />
+		</listhead>
+		<listitem forEach="${oes}">
+
+			<listcell label="${each.text}" />
+			<listcell label="${each.start}" />
+			<listcell label="${each.end}" />
+		</listitem>
+
+	</listbox>
+	<hbox width="100%">
+		<div width="100%" align="center">
+			<button label="确定" onClick="ok()" />
+			<button label="取消" onClick="cancle()" />
+		</div>
+	</hbox>
+
+	<zscript>
+		<![CDATA[
+    void ok() {
+		int index=eventList.getSelectedIndex();
+		removewin.setAttribute("selected",index);
+		removewin.detach();
+    }
+    
+    void cancle() {
+		removewin.setAttribute("selected",-1);
+		removewin.detach();
+    }
+    ]]>
+	</zscript>
+</window>
+

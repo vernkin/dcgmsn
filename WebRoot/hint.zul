@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window mode="overlapped" top="0px" left="0px"
+	height="30px" style="background:orange;">
+	<separator/>
+	<label value="${arg.message}"/>
+	<timer delay="5000" onTimer="self.parent.detach()"/>
+</window>

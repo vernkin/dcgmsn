@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<window id="win">
+	<zscript>
+		<![CDATA[
+		import java.util.*;
+		import org.zkforge.timeline.decorator.*;
+		
+		TimeZone zone=TimeZone.getTimeZone("GMT-05");
+		
+		Date current=new Date(Date.parse("Jun 28 2008 00:00:00 GMT-0500"));
+		//for hotzone of band #1
+		Date d1=new Date(Date.parse("Aug 01 2008 00:00:00 GMT-0500"));
+		Date d2=new Date(Date.parse("Sep 01 2008 00:00:00 GMT-0500"));
+		Date d3=new Date(Date.parse("Aug 02 2008 00:00:00 GMT-0500"));
+		Date d4=new Date(Date.parse("Aug 04 2008 00:00:00 GMT-0500"));
+		Date d5=new Date(Date.parse("Aug 02 2008 06:00:00 GMT-0500"));
+		Date d6=new Date(Date.parse("Aug 02 2008 12:00:00 GMT-0500"));
+
+		//for hotzone of band #2
+		Date d7=new Date(Date.parse("Aug 01 2008 00:00:00 GMT-0500"));
+		Date d8=new Date(Date.parse("Sep 01 2008 00:00:00 GMT-0500"));
+		
+		//for add and remove OccurEvent
+		ArrayList events=new ArrayList();
+		
+		//for filter and highlight
+		String filter;
+		String[] highlight=new String[4];
+		
+		//for decorator
+		SpanHighlightDecorator shd=new SpanHighlightDecorator(d1,d2);
+		
+]]>
+	</zscript>
+	<timeline height="300px" width="100%" id="tl">
+		<bandinfo width="70%" id="b1" intervalUnit="month"
+			intervalPixels="100" eventSourceUrl="../data/example2.xml"
+			timeZone="${zone}" date="${current}">
+			<hotzone start="${d1}" end="${d2}" magnify="10" unit="week" />
+			<hotzone start="${d3}" end="${d4}" magnify="7" unit="day" />
+			<hotzone start="${d5}" end="${d6}" magnify="5" unit="hour" />
+		</bandinfo>
+		<bandinfo id="b2" timeZone="${zone}" date="${current}"
+			width="30%" intervalUnit="year" intervalPixels="200" syncWith="b1"
+			eventSourceUrl="../data/example2.xml" trackHeight="0.5" trackGap="0.2"
+			showEventText="false">
+			<hotzone start="${d7}" end="${d8}" magnify="20" unit="week" />
+		</bandinfo>
+	</timeline>
+	<vbox>
+		<hbox>
+			<button label="Add OccurEvent">
+				<attribute name="onClick">
+					<![CDATA[
+			import org.zkforge.timeline.*;
+			import org.zkforge.timeline.data.*;
+			import java.util.*;
+			
+			OccurEvent e=new OccurEvent();
+			Map params=new HashMap();
+			params.put("event",e);
+			Window w=(Window)Executions.createComponents("add-event.zul", null, params);
+			w.doModal();
+			if(w.getAttribute("OK")){
+				events.add(e);
+				b1.addOccurEvent(e);
+				b2.addOccurEvent(e);
+				b1.scrollToCenter(e.getStart());
+			}
+			]]>
+				</attribute>
+			</button>
+			<button label="Remove OccurEvent">
+				<attribute name="onClick">
+					<![CDATA[
+			import org.zkforge.timeline.data.*;
+			
+			Map params=new HashMap();
+			params.put("events",events);
+			Window w=(Window)Executions.createComponents("remove-event.zul", null, params);
+			w.doModal();
+			int index=w.getAttribute("selected");
+			if(index!=-1){
+				OccurEvent e=(OccurEvent)events.get(index);
+				
+				b1.removeOccurEvent(e);
+				b2.removeOccurEvent(e);
+				events.remove(index);
+				
+				b1.scrollToCenter(e.getStart());
+			}
+			]]>
+				</attribute>
+			</button>
+			<button label="Filter and Highlight">
+				<attribute name="onClick">
+					<![CDATA[
+			Map params=new HashMap();
+			params.put("filter",filter);
+			params.put("highlight1",highlight[0]);
+			params.put("highlight2",highlight[1]);
+			params.put("highlight3",highlight[2]);
+			params.put("highlight4",highlight[3]);
+			Window w=(Window)Executions.createComponents("filter-highlight.zul", null, params);
+			w.doModal();
+
+			filter=(String)w.getAttribute("filter");
+			tl.performFiltering(filter);
+
+			highlight[0]=(String)w.getAttribute("highlight1");
+			highlight[1]=(String)w.getAttribute("highlight2");
+			highlight[2]=(String)w.getAttribute("highlight3");
+			highlight[3]=(String)w.getAttribute("highlight4");
+			tl.performHighlitht(highlight);
+			
+			
+			]]>
+				</attribute>
+			</button>
+		</hbox>
+		<hbox>
+			<button label="Add SpanHighlightDecrotator">
+				<attribute name="onClick">
+					<![CDATA[
+			Map params=new HashMap();
+			params.put("decorator",shd);
+
+			Window w=(Window)Executions.createComponents("decorator.zul", null, params);
+			w.doModal();
+			if(w.getAttribute("OK")){
+				b1.removeHighlightDecorator(shd);
+				b2.removeHighlightDecorator(shd);
+			
+				b1.addHighlightDecorator(shd);
+				b2.addHighlightDecorator(shd);
+			}
+			]]>
+				</attribute>
+			</button>
+
+			<button label="Remove SpanHighlightDecrotator">
+				<attribute name="onClick">
+					<![CDATA[
+			b1.removeHighlightDecorator(shd);
+			b2.removeHighlightDecorator(shd);
+			]]>
+				</attribute>
+			</button>
+		</hbox>
+	</vbox>
+</window>
+

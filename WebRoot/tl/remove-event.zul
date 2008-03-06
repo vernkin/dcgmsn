@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+	basic.zul
+	
+	{{IS_NOTE
+	Purpose:
+	
+	Description:
+	
+	History:
+	2007-2-4, Created by Gu WeiXing
+	}}IS_NOTE
+	
+	Copyright (C) 2006 Potix Corporation. All Rights Reserved.
+	
+	{{IS_RIGHT
+	}}IS_RIGHT
+-->
+<window title="remove OccurEvent window" width="300px"
+	xmlns:a="http://www.zkoss.org/2005/zk/annotation" id="removewin">
+	<zscript>
+		<![CDATA[
+		import java.util.*;
+		ArrayList events=arg.get("events");
+]]>
+	</zscript>
+	<listbox id="eventList">
+		<listhead>
+			<listheader label="Text" width="40%" />
+			<listheader label="Start Date" width="30%" />
+			<listheader label="End Date" width="30%" />
+		</listhead>
+		<listitem forEach="${events}">
+
+			<listcell label="${each.text}" />
+			<listcell label="${each.start}" />
+			<listcell label="${each.end}" />
+		</listitem>
+
+	</listbox>
+	<hbox>
+		<button label="OK" onClick="ok()" />
+		<button label="Cancle" onClick="cancle()" />
+	</hbox>
+
+	<zscript>
+		<![CDATA[
+    void ok() {
+		int index=eventList.getSelectedIndex();
+		removewin.setAttribute("selected",index);
+		removewin.detach();
+    }
+    
+    void cancle() {
+
+		removewin.setAttribute("selected",-1);
+		removewin.detach();
+    }
+    ]]>
+	</zscript>
+</window>
+

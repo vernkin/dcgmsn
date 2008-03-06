@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+	basic.zul
+	
+	{{IS_NOTE
+	Purpose:
+	
+	Description:
+	
+	History:
+	2007-2-4, Created by Gu WeiXing
+	}}IS_NOTE
+	
+	Copyright (C) 2006 Potix Corporation. All Rights Reserved.
+	
+	{{IS_RIGHT
+	}}IS_RIGHT
+-->
+<window title="filter and highlight window" width="300px" id="filterwin">
+
+	<vbox>
+		<hbox>
+			Filter :
+			<textbox id="filter" />
+		</hbox>
+		<hbox>
+			Highlight:
+			<vbox>
+				<label value="highlight1"
+					style="background-color:#FFFF00;" />
+				<textbox id="highlight1" />
+				<label value="highlight2"
+					style="background-color:#FFC000;" />
+				<textbox id="highlight2" />
+				<label value="highlight3" style="background-color:red;" />
+				<textbox id="highlight3" />
+				<label value="highlight4"
+					style="background-color:blue;" />
+				<textbox id="highlight4" />
+			</vbox>
+		</hbox>
+		<hbox>
+			<button label="Ok" onClick="update()" />
+			<button label="Clear" onClick="clear()" />
+		</hbox>
+	</vbox>
+
+	<zscript>
+		<![CDATA[
+		filter.value=arg.get("filter");
+		highlight1.value=arg.get("highlight1");
+		highlight2.value=arg.get("highlight2");
+		highlight3.value=arg.get("highlight3");
+		highlight4.value=arg.get("highlight4");
+    
+    void update() {
+		filterwin.setAttribute("filter",filter.value);
+		filterwin.setAttribute("highlight1",highlight1.value);
+		filterwin.setAttribute("highlight2",highlight2.value);
+		filterwin.setAttribute("highlight3",highlight3.value);
+		filterwin.setAttribute("highlight4",highlight4.value);
+		filterwin.detach();
+    }
+    
+    void clear(){
+ 		filter.value="";
+		highlight1.value="";
+		highlight2.value="";
+		highlight3.value="";
+		highlight4.value="";   	
+    }
+    ]]>
+	</zscript>
+</window>
+
