@@ -5,17 +5,17 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-public class DCEventDAO extends HibernateDaoSupport{
-	private static final Logger log = Logger.getLogger(DCEventDAO.class);
+public class TaskDAO extends HibernateDaoSupport{
+	private static final Logger log = Logger.getLogger(TaskDAO.class);
 
 	protected void initDao() {
 		// do nothing
 	}
 
-	public void save(DCEvent evt) {
-		log.debug("saving DCEvent instance");
+	public void save(Task task) {
+		log.debug("saving Task instance");
 		try {
-			getHibernateTemplate().saveOrUpdate(evt);
+			getHibernateTemplate().saveOrUpdate(task);
 			log.debug("save successful");
 		} catch (RuntimeException re) {
 			log.error("save failed", re);
@@ -23,10 +23,10 @@ public class DCEventDAO extends HibernateDaoSupport{
 		}
 	}
 
-	public void delete(DCEvent evt) {
-		log.debug("deleting DCEvent instance");
+	public void delete(Task task) {
+		log.debug("deleting Task instance");
 		try {
-			getHibernateTemplate().delete(evt);
+			getHibernateTemplate().delete(task);
 			log.debug("delete successful");
 		} catch (RuntimeException re) {
 			log.error("delete failed", re);
@@ -34,10 +34,10 @@ public class DCEventDAO extends HibernateDaoSupport{
 		}
 	}
 
-	public DCEvent findById(java.lang.Long id) {
+	public Task findById(java.lang.Long id) {
 		try {
-			DCEvent instance = (DCEvent) getHibernateTemplate().get(
-					"dcgmsn.orm.DCEvent", id);
+			Task instance = (Task) getHibernateTemplate().get(
+					"dcgmsn.orm.Task", id);
 			return instance;
 		} catch (RuntimeException re) {
 			throw re;
@@ -45,7 +45,7 @@ public class DCEventDAO extends HibernateDaoSupport{
 	}
 
 	@SuppressWarnings("unchecked")
-	public List findByExample(DCEvent instance) {
+	public List findByExample(Task instance) {
 		try {
 			List results = getHibernateTemplate().findByExample(instance);
 			return results;
@@ -58,7 +58,7 @@ public class DCEventDAO extends HibernateDaoSupport{
 	@SuppressWarnings("unchecked")
 	public List findByProperty(String propertyName, Object value) {
 		try {
-			String queryString = "from DCEvent as model where model."
+			String queryString = "from Task as model where model."
 					+ propertyName + "= ?";
 			return getHibernateTemplate().find(queryString, value);
 		} catch (RuntimeException re) {
@@ -68,9 +68,9 @@ public class DCEventDAO extends HibernateDaoSupport{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<DCEvent> findByUser(User user){
+	public List<Task> findByUser(User user){
 		try {
-			String queryString = "from DCEvent as e where e.user.id = ?";
+			String queryString = "from Task as t where t.owner.id = ?";
 			return getHibernateTemplate().find(queryString, user.getId());
 		} catch (RuntimeException re) {
 			log.error("find by property name failed", re);

@@ -32,11 +32,11 @@ public class BaiduKnow implements InternetResource {
 	private final static String BaikeURLHead = "<font size=\"3\"><a href=\"";
 	private final static String BaikeURLEnd = "\" target=\"_blank\">";
 		
-	private final static String encoding = "gb2312";
+	public final static String ENCODING = "gb2312";
 	
 	public String getAnswer(String... params) throws Exception {
-		String keyword = URLEncoder.encode(params[0],encoding);
-		String data = UrlResource.getUrlData(findUrl+keyword, encoding);
+		String keyword = URLEncoder.encode(params[0],ENCODING);
+		String data = UrlResource.getUrlData(findUrl+keyword, ENCODING);
 		
 		//try to find baike
 		String ret = StringUtil.substring(data, BaikeHead, BaikeEnd);
@@ -48,15 +48,15 @@ public class BaiduKnow implements InternetResource {
 			return null;
 		
 		//goto answer page
-		data = UrlResource.getUrlData(AnswerUrl+ret, encoding);
+		data = UrlResource.getUrlData(AnswerUrl+ret, ENCODING);
 		
 		//get the best answers
 		ret = StringUtil.substring(data, BestAnsHead, BestAnsEnd);		
 		if(ret != null)
-			return ret;
+			return StringUtil.skipHtml(ret);
 		
 		//try to other answers
-		return StringUtil.substring(data, OtherAnsHead, OtherAnsEnd);
+		return  StringUtil.skipHtml(StringUtil.substring(data, OtherAnsHead, OtherAnsEnd));
 	}
 
 	
@@ -68,6 +68,6 @@ public class BaiduKnow implements InternetResource {
 		String url =  data.substring(startIndex+BaikeURLHead.length(), endIndex);
 		String desp = data.substring(endIndex+BaikeURLEnd.length());
 		
-		return desp + "更多内容见 "+url;
+		return StringUtil.skipHtml(desp) + "更多内容见 "+url;
 	}
 }

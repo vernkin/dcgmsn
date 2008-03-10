@@ -7,7 +7,7 @@ public class BaiduKnowTest extends TestCase {
 
 	public void testGetAnswer() throws Exception{
 		BaiduKnow bk = new BaiduKnow();
-		System.out.println(bk.getAnswer("新白娘子传奇"));
+		System.out.println(bk.getAnswer("什么是百度"));
 	}
 
 }

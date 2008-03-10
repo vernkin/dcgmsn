@@ -15,6 +15,11 @@
         <property name="format_sql">true</property>
 
         <mapping class="dcgmsn.orm.User"/>
-         <mapping class="dcgmsn.orm.DCEvent"/>
+        <mapping class="dcgmsn.orm.DCEvent"/>
+        <mapping class="dcgmsn.orm.Message"/>
+        <mapping class="dcgmsn.orm.Task"/>
+        <mapping class="dcgmsn.orm.Programme"/>
+        <mapping class="dcgmsn.orm.LabelType"/>
+        <mapping class="dcgmsn.orm.Feed"/>
     </session-factory>
 </hibernate-configuration>

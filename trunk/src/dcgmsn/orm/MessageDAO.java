@@ -5,17 +5,17 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-public class DCEventDAO extends HibernateDaoSupport{
-	private static final Logger log = Logger.getLogger(DCEventDAO.class);
+public class MessageDAO extends HibernateDaoSupport{
+	private static final Logger log = Logger.getLogger(MessageDAO.class);
 
 	protected void initDao() {
 		// do nothing
 	}
 
-	public void save(DCEvent evt) {
-		log.debug("saving DCEvent instance");
+	public void save(Message msg) {
+		log.debug("saving Message instance");
 		try {
-			getHibernateTemplate().saveOrUpdate(evt);
+			getHibernateTemplate().saveOrUpdate(msg);
 			log.debug("save successful");
 		} catch (RuntimeException re) {
 			log.error("save failed", re);
@@ -23,10 +23,10 @@ public class DCEventDAO extends HibernateDaoSupport{
 		}
 	}
 
-	public void delete(DCEvent evt) {
-		log.debug("deleting DCEvent instance");
+	public void delete(Message msg) {
+		log.debug("deleting Message instance");
 		try {
-			getHibernateTemplate().delete(evt);
+			getHibernateTemplate().delete(msg);
 			log.debug("delete successful");
 		} catch (RuntimeException re) {
 			log.error("delete failed", re);
@@ -34,10 +34,10 @@ public class DCEventDAO extends HibernateDaoSupport{
 		}
 	}
 
-	public DCEvent findById(java.lang.Long id) {
+	public Message findById(java.lang.Long id) {
 		try {
-			DCEvent instance = (DCEvent) getHibernateTemplate().get(
-					"dcgmsn.orm.DCEvent", id);
+			Message instance = (Message) getHibernateTemplate().get(
+					"dcgmsn.orm.Message", id);
 			return instance;
 		} catch (RuntimeException re) {
 			throw re;
@@ -45,7 +45,7 @@ public class DCEventDAO extends HibernateDaoSupport{
 	}
 
 	@SuppressWarnings("unchecked")
-	public List findByExample(DCEvent instance) {
+	public List findByExample(Message instance) {
 		try {
 			List results = getHibernateTemplate().findByExample(instance);
 			return results;
@@ -58,7 +58,7 @@ public class DCEventDAO extends HibernateDaoSupport{
 	@SuppressWarnings("unchecked")
 	public List findByProperty(String propertyName, Object value) {
 		try {
-			String queryString = "from DCEvent as model where model."
+			String queryString = "from Message as model where model."
 					+ propertyName + "= ?";
 			return getHibernateTemplate().find(queryString, value);
 		} catch (RuntimeException re) {
@@ -68,9 +68,20 @@ public class DCEventDAO extends HibernateDaoSupport{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<DCEvent> findByUser(User user){
+	public List<Message> findByFrom(User user){
 		try {
-			String queryString = "from DCEvent as e where e.user.id = ?";
+			String queryString = "from Message as t where t.from.id = ? order by createDate desc";
+			return getHibernateTemplate().find(queryString, user.getId());
+		} catch (RuntimeException re) {
+			log.error("find by property name failed", re);
+			throw re;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Message> findByTo(User user){
+		try {
+			String queryString = "from Message as t where t.to.id = ? order by createDate desc";
 			return getHibernateTemplate().find(queryString, user.getId());
 		} catch (RuntimeException re) {
 			log.error("find by property name failed", re);

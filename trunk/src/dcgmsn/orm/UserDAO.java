@@ -2,16 +2,29 @@ package dcgmsn.orm;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-public class UserDAO extends HibernateDaoSupport {
-	private static final Log log = LogFactory.getLog(UserDAO.class);
+import dcgmsn.robot.MyServer;
 
+public class UserDAO extends HibernateDaoSupport {
+	private static final Logger log = Logger.getLogger(UserDAO.class);
+
+	private Boolean first = false;
+	
 	protected void initDao() {
-		// do nothing
+		synchronized(first){
+			if(!first){
+				log.info("Robot Start!!!");
+				(new Thread(new Runnable(){
+					public void run(){
+						MyServer.main(null);
+					}
+				})).start();
+				first = true;
+			}
+		}
 	}
 
 	public void save(User user) {
