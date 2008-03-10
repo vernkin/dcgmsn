@@ -21,7 +21,7 @@ public class TimelineService {
 		return dceventDao.findByUser(user);
 	}
 	
-	public void addDCEvent(DCEvent evt){
+	public void add(DCEvent evt){
 		dceventDao.save(evt);
 	}
 	

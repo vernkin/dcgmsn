@@ -10,11 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.zkforge.json.simple.JSONObject;
 import org.zkforge.timeline.data.OccurEvent;
 
 @Entity
-@Table (name="occur_events")
+@Table (name="events")
 public class DCEvent implements Serializable{
 
 	private static final long serialVersionUID = 5561139165046741497L;
@@ -22,7 +21,7 @@ public class DCEvent implements Serializable{
 	/** Id in the table */
 	@Id @GeneratedValue
 	@Column
-	private Long tid;
+	private Long id;
 	
 	/** The people used */
 	@ManyToOne
@@ -52,23 +51,20 @@ public class DCEvent implements Serializable{
 	@Column (name = "link_url")
 	private String linkUrl;
 	
-	@Column
-	private String color;
-	
-	@Column (name = "text_color")
-	private String textColor;
+	@ManyToOne
+	private LabelType type;
 	
 	public DCEvent(){
 		duration = true;
 	}
 	
 
-	public void setTid(Long tid) {
-		this.tid = tid;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public Long getTid() {
-		return tid;
+	public Long getId() {
+		return id;
 	}
 
 	public void setUser(User user) {
@@ -163,22 +159,28 @@ public class DCEvent implements Serializable{
 		return linkUrl;
 	}
 
-	public void setColor(String color) {
-		this.color = color;
-	}
-
 	public String getColor() {
-		return color;
-	}
-
-	public void setTextColor(String textColor) {
-		this.textColor = textColor;
+		if(type == null)
+			return null;
+		return type.getTextColor();
 	}
 
 	public String getTextColor() {
-		return textColor;
+		if(type == null)
+			return null;
+		return type.getTextColor();
 	}
 	
+	public void setType(LabelType type) {
+		this.type = type;
+	}
+
+
+	public LabelType getType() {
+		return type;
+	}
+
+
 	/**
 	 * Convert DCEvent to OccurEvent
 	 * @param dce
@@ -205,10 +207,10 @@ public class DCEvent implements Serializable{
 	 * @param ret if not null, update the DCEvent
 	 * @return
 	 */
-	public static DCEvent toDCEvent(OccurEvent oe,DCEvent ret){
+	public static DCEvent toDCEvent(OccurEvent oe,LabelType type,DCEvent ret){
 		if(ret == null)
 			ret = new DCEvent();
-		ret.setColor(oe.getColor());
+		ret.setType(type);
 		ret.setDescription(oe.getDescription());
 		ret.setDuration(oe.isDuration());
 		if(oe.getEnd() != null)
@@ -219,37 +221,6 @@ public class DCEvent implements Serializable{
 		if(oe.getStart() != null)
 			ret.setStart(new java.sql.Date(oe.getStart().getTime()));
 		ret.setText(oe.getText());
-		ret.setTextColor(oe.getTextColor());
 		return ret;
-	}
-	
-	
-	@SuppressWarnings("unchecked")
-	public String toString(){
-		JSONObject json = new JSONObject();
-		if (start != null)
-			json.put("start", 
-					org.zkforge.timeline.util.TimelineUtil.formatDateTime(start));
-		if (end != null)
-			json.put("end", 
-					org.zkforge.timeline.util.TimelineUtil.formatDateTime(end));
-		json.put("duration", Boolean.valueOf(duration));
-		if (text != null && text.length() != 0)
-			json.put("text", text);
-		if (description != null && description.length() != 0)
-			json.put("description", description);
-		if (imageUrl != null && imageUrl.length() != 0)
-			json.put("image", imageUrl);
-		if (linkUrl != null && linkUrl.length() != 0)
-			json.put("link", linkUrl);
-		if (iconUrl != null && iconUrl.length() != 0)
-			json.put("icon", iconUrl);
-
-		if (color != null && color.length() != 0)
-			json.put("color", color);
-		if (textColor != null && textColor.length() != 0)
-			json.put("textColor", textColor);
-		
-		return json.toString();
 	}
 }

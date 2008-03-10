@@ -1,8 +1,7 @@
 package dcgmsn.service;
 
-import java.util.List;
+import java.sql.Date;
 
-import dcgmsn.orm.DCEvent;
 import dcgmsn.orm.DCEventDAO;
 import dcgmsn.orm.User;
 import dcgmsn.orm.UserDAO;
@@ -31,9 +30,18 @@ public class UserService {
 	}
 
 	public User getUser(String account){
-		return userDao.findByAccount(account);
+		User ret = userDao.findByAccount(account);
+		if(ret!=null){
+			ret.setLastLoginDate(new Date(System.currentTimeMillis()));
+			userDao.save(ret);
+		}
+		return ret;
 	}
 	
+	
+	public void save(User user){
+		userDao.save(user);
+	}
 	
 	/**
 	 * If the User not exists, auto create a new one
@@ -44,7 +52,9 @@ public class UserService {
 		User ret = getUser(account);
 		if(ret != null)
 			return ret;
-		userDao.save(new User(account));
+		User nu = new User(account);
+		nu.setRegistDate(new Date(System.currentTimeMillis()));
+		userDao.save(nu);
 		return getUser(account);
 	}
 	

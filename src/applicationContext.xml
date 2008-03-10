@@ -111,6 +111,27 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
+    <bean id="MessageDAO" class="dcgmsn.orm.MessageDAO">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    
+    <bean id="ProgrammeDAO" class="dcgmsn.orm.ProgrammeDAO">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    
+    <bean id="TaskDAO" class="dcgmsn.orm.TaskDAO">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    
+    <bean id="FeedDAO" class="dcgmsn.orm.FeedDAO">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    
+    <bean id="LabelTypeDAO" class="dcgmsn.orm.LabelTypeDAO">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    
+    
 	<bean id="EmailService"
 		class="dcgmsn.service.EmailService">
 		<property name="mailSender" ref="MailSender" />
@@ -131,4 +152,17 @@
 	<bean id="TimelineService" class="dcgmsn.service.TimelineService">
 		<property name="dceventDao" ref="DCEventDAO"/>
 	</bean>
+	
+	<bean id="TaskService" class="dcgmsn.service.TaskService">
+        <property name="taskDao" ref="TaskDAO"/>
+        <property name="progDao" ref="ProgrammeDAO"/>
+    </bean>
+    
+    <bean id="TypeService" class="dcgmsn.service.TypeService">
+        <property name="typeDao" ref="LabelTypeDAO"/>
+    </bean>
+    
+    <bean id="MessageService" class="dcgmsn.service.MessageService">
+        <property name="msgDao" ref="MessageDAO"/>
+    </bean>
 </beans>
