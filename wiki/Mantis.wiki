@@ -1,0 +1,2 @@
+=Mantis是什么=
+Mantis是一个开源的基于PHP/MySQL/Web的轻量级错误追踪系统。
